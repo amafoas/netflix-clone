@@ -1,0 +1,26 @@
+.browsemenu_list {
+  @apply flex md:ml-8 md:gap-5 md:flex-row text-xs 
+}
+
+.browsemenu_item {
+  @apply cursor-pointer hover:text-gray-300 transition 
+}
+
+/* Mobile floating menu */
+@media (max-width: 768px) {
+  .browsemenu_main_container:hover .browsemenu_container {
+    display: initial;
+  }
+
+  .browsemenu_container {
+    @apply absolute pt-8 top-8 left-20 hidden
+  }
+
+  .browsemenu_list {
+    @apply bg-slate-800 border border-gray-700 bg-opacity-70 w-64 flex-col py-3 
+  }
+  
+  .browsemenu_item {
+    @apply h-10 justify-center items-center flex hover:text-white hover:bg-slate-800 hover:bg-opacity-50
+  }
+}
