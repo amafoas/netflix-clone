@@ -10,10 +10,18 @@ export default function Banner ({ data }:any) {
       <div className='h-full bg-gradient-to-b from-transparent from-60% to-zinc-900' />
       <div className='absolute ml-6 md:ml-12 xl:ml-[4%] flex flex-col gap-2
         bottom-[15%] sm:bottom-[30%] xl:bottom-[40%]
-        sm:w-[60%] md:w-[50%] xl:w-[40%] '
+        sm:w-[60%] md:w-[50%] xl:w-[40%]'
       >
-        <p className='text-2xl lg:text-4xl font-bold drop-shadow-xl'>{title}</p>
-        <p className='text-xs drop-shadow-xl md:text-sm'>{overview}</p>
+        <p
+          className='drop-shadow text-2xl lg:text-4xl font-bold'
+          style={{ textShadow: '-1px 0px 0 #000' }}
+        >{title}
+        </p>
+        <p
+          className='drop-shadow text-xs md:text-sm'
+          style={{ textShadow: '-1px 0px 0 #000' }}
+        >{overview}
+        </p>
         <div className='flex gap-2'>
           <button className='flex gap-1 items-center rounded-md px-3 py-2
             text-slate-800 text-xs lg:text-lg font-medium
