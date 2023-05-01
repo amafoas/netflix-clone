@@ -8,8 +8,7 @@ interface objRequests {
 export const firstRequests: objRequests = {
   trending: `${BASE}/trending/all/week?api_key=${API_KEY}&language=en-US`,
   topRated: `${BASE}/movie/top_rated?api_key=${API_KEY}&language=en-US`,
-  netflixOriginals: `${BASE}/discover/tv?api_key=${API_KEY}&with_networks=213`,
-  actionMovies: `${BASE}/discover/movie?api_key=${API_KEY}&with_genres=28`
+  netflixOriginals: `${BASE}/discover/tv?api_key=${API_KEY}&with_networks=213`
 }
 
 interface Genre {

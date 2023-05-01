@@ -3,7 +3,32 @@
 @tailwind utilities;
 
 :root {
-  --horizontal-spacing: 4%
+  --horizontal-spacing: 4%;
+  --items-per-screen: 2;
+}
+
+@media (min-width: 500px) {
+  :root {
+    --items-per-screen: 3;
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --items-per-screen: 4;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --items-per-screen: 5;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --items-per-screen: 6;
+  }
 }
 
 body {

@@ -5,6 +5,7 @@ import SideButton from './SideButton'
 import ProgressBar from './ProgressBar'
 import { Movie } from '@/types/movie'
 import styles from '@/styles/MovieCarousel.module.css'
+import { getItemsPerScreen } from '@/utils/utils'
 
 type Direction = 'left' | 'right'
 export interface Props { label: string, movies: Movie[] }
@@ -91,10 +92,10 @@ function getSliderValues (
   sliderRef: RefObject<HTMLDivElement>, moviesLength: number
 ):{ maxIndex: number, index: number } {
   if (!sliderRef.current) return { index: 0, maxIndex: 0 }
-  const curr: HTMLElement = sliderRef.current
-  const index = parseInt(window.getComputedStyle(curr).getPropertyValue('--slider-index'))
-  const itemsPerScreen = parseInt(window.getComputedStyle(curr).getPropertyValue('--items-per-screen'))
-  const maxIndex = Math.ceil(moviesLength / itemsPerScreen) - 1
+  const index = parseInt(
+    window.getComputedStyle(sliderRef.current).getPropertyValue('--slider-index')
+  )
+  const maxIndex = Math.ceil(moviesLength / getItemsPerScreen()) - 1
   return { index, maxIndex }
 }
 
