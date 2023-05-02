@@ -1,13 +1,15 @@
-/* eslint-disable @next/next/no-img-element */
 import React, { useContext } from 'react'
 import { HoverCardContext } from '@/contexts/HoverCardContext'
 import { Movie } from '@/types/movie'
 import styles from '@/styles/MovieCarousel.module.css'
+import Image from 'next/image'
 
 interface Props { movie: Movie }
 function MovieCard ({ movie }: Props) {
   const { setHoverCard } = useContext(HoverCardContext)
   let timeoutId: ReturnType<typeof setTimeout>
+  const title = movie.title ?? movie.name ?? 'err: no name'
+  const backdrop_path = movie.backdrop_path ?? movie.poster_path
 
   return (
     <div
@@ -17,22 +19,17 @@ function MovieCard ({ movie }: Props) {
         const y = top + window.scrollY
         timeoutId = setTimeout(() => {
           setHoverCard({
-            x: left,
-            y,
-            height,
-            width,
-            isHover: true,
-            title: movie.title ?? movie.name ?? 'err: no name',
-            backdrop_path: movie.backdrop_path ?? movie.poster_path
+            x: left, y, height, width, title, backdrop_path, isHover: true
           })
         }, 350)
       }}
       onMouseLeave={() => clearTimeout(timeoutId)}
     >
-      <img
-        alt={movie.title}
-        className='rounded-md aspect-video'
-        src={'https://image.tmdb.org/t/p/original' + (movie.backdrop_path ?? movie.poster_path)}
+      <Image
+        alt={title}
+        className='rounded-md aspect-video object-cover bg-slate-800'
+        width={400} height={0}
+        src={'https://image.tmdb.org/t/p/w400/' + backdrop_path}
       />
     </div>
   )
