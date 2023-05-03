@@ -6,7 +6,7 @@ import MovieCarousel, { Props as MovieCarouselProps } from '@/components/movieCa
 import HoverCard from '@/components/HoverCard'
 import MovieCarouselSkeleton from '@/components/movieCarousel/MovieCarouselSkeleton'
 import useIntersectionObserver from '@/hooks/useIntersectionObserver'
-import { firstRequests, getMoviesRequestUrl } from '@/utils/requests'
+import { firstRequests, getMovieGenre } from '@/utils/requests'
 import { Movie } from '@/types/movie'
 
 interface Responses {[key: string]: Movie[]}
@@ -21,7 +21,7 @@ export default function Browse ({ responses }:Props) {
 
   useEffect(() => {
     if (!reachBottom || fetching.finish) return
-    let request = getMoviesRequestUrl.next()
+    let request = getMovieGenre.next()
     if (request.done) {
       setFetching(({ done }) => ({ done, finish: true }))
       return
@@ -29,8 +29,8 @@ export default function Browse ({ responses }:Props) {
     setFetching(({ done, finish }) => ({ done: !done, finish }))
     const promises = []
     for (let count = 0; !request.done && count < 3; count++) {
-      const { name, url, id } = request.value
-      promises.push(fetch(url)
+      const { name, id } = request.value
+      promises.push(fetch(`api/getMovies?id=${id}`)
         .then(res => res.json())
         .then(data => {
           MovieCarouselRef.current.push(
@@ -38,7 +38,7 @@ export default function Browse ({ responses }:Props) {
           )
         })
       )
-      request = getMoviesRequestUrl.next()
+      request = getMovieGenre.next()
     }
     Promise.all(promises).then(() => setFetching(({ done, finish }) => ({ done: !done, finish })))
   }, [reachBottom, fetching.finish])
