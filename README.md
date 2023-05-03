@@ -5,7 +5,12 @@ This project is a clone of the Netflix homepage, built with **React**, **Next.js
 
 ## Setting up the project
 
-In the root folder of the project, run the following command to install the project dependencies:
+First you will need to add a TMDB api key under the name TMDB_API_KEY in your .env.local
+```
+TMDB_API_KEY=YOUR-API-KEY
+```
+
+After that in the root folder of the project, run the following command to install the project dependencies:
 
 ```bash
 npm install
