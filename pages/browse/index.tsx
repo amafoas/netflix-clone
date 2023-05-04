@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { HoverCardContext, defaultValue } from '@/contexts/HoverCardContext'
 import NavBar from '@/components/navbar/Navbar'
 import Banner from '@/components/Banner'
-import MovieCarousel, { Props as MovieCarouselProps } from '@/components/movieCarousel/MovieCarousel'
 import HoverCard from '@/components/HoverCard'
+import MovieCarousel, { Props as MovieCarouselProps } from '@/components/movieCarousel/MovieCarousel'
 import MovieCarouselSkeleton from '@/components/movieCarousel/MovieCarouselSkeleton'
 import useIntersectionObserver from '@/hooks/useIntersectionObserver'
+import { HoverCardProvider } from '@/contexts/HoverCardContext'
 import { firstRequests, getMovieGenre } from '@/utils/requests'
 import { Movie } from '@/types/movie'
 
@@ -13,7 +13,6 @@ interface Responses {[key: string]: Movie[]}
 interface Props{responses: Responses }
 
 export default function Browse ({ responses }:Props) {
-  const [hoverCard, setHoverCard] = useState(defaultValue)
   const [fetching, setFetching] = useState({ done: false, finish: false })
   const MovieCarouselRef = useRef<React.ReactElement<MovieCarouselProps>[]>([])
   const bottomPageRef = useRef(null)
@@ -47,7 +46,7 @@ export default function Browse ({ responses }:Props) {
     <div className='h-full'>
       <NavBar />
       <Banner data={responses.trending[0]} />
-      <HoverCardContext.Provider value={{ hoverCard, setHoverCard }}>
+      <HoverCardProvider>
         <HoverCard />
         <div className='mt-[-7%] md:mt-[-10%] xl:mt-[-17%] '>
           <MovieCarousel label='Trending' movies={responses.trending} />
@@ -55,7 +54,7 @@ export default function Browse ({ responses }:Props) {
           <MovieCarousel label='Netflix Originals' movies={responses.netflixOriginals} />
           {MovieCarouselRef.current.map((MovieCarousel) => MovieCarousel)}
         </div>
-      </HoverCardContext.Provider>
+      </HoverCardProvider>
       <div className={fetching.done ? '' : 'hidden'}>
         <MovieCarouselSkeleton />
         <MovieCarouselSkeleton />

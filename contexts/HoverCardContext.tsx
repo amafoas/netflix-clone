@@ -1,4 +1,4 @@
-import { createContext } from 'react'
+import { useState, createContext, ReactNode, Dispatch, SetStateAction } from 'react'
 
 interface Card {
   x: number
@@ -9,23 +9,33 @@ interface Card {
   backdrop_path: string
   isHover: boolean
 }
+const emptyCard: Card = {
+  x: 0, y: 0, height: 0, width: 0, title: '', backdrop_path: '', isHover: false
+}
 
 interface ContextType {
   hoverCard: Card
-  setHoverCard: (newCard: Card) => void
+  setHoverCard: Dispatch<SetStateAction<Card>>
 }
-
-export const defaultValue = {
-  x: 0,
-  y: 0,
-  height: 0,
-  width: 0,
-  title: '',
-  backdrop_path: '',
-  isHover: false
-}
-
-export const HoverCardContext = createContext<ContextType>({
-  hoverCard: defaultValue,
+const HoverCardContext = createContext<ContextType>({
+  hoverCard: emptyCard,
   setHoverCard: (newCard) => {}
 })
+
+interface HoverCardProviderProps {
+  children: ReactNode
+}
+function HoverCardProvider ({ children }:HoverCardProviderProps) {
+  const [hoverCard, setHoverCard] = useState(emptyCard)
+  return (
+    <HoverCardContext.Provider value={{ hoverCard, setHoverCard }}>
+      {children}
+    </HoverCardContext.Provider>
+  )
+}
+
+export {
+  emptyCard,
+  HoverCardContext,
+  HoverCardProvider
+}

@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { useContext } from 'react'
-import { HoverCardContext, defaultValue } from '@/contexts/HoverCardContext'
+import { HoverCardContext, emptyCard } from '@/contexts/HoverCardContext'
 import { BsPlayFill, BsPlus, BsHandThumbsUp } from 'react-icons/bs'
 
 export default function HoverCard () {
@@ -32,12 +32,12 @@ export default function HoverCard () {
       h-fill
       ${hoverCard.isHover ? '' : 'hidden'}`}
       style={{ left, top, width }}
-      onMouseLeave={() => setHoverCard(defaultValue)}
+      onMouseLeave={() => setHoverCard(emptyCard)}
     >
       <img
         alt={hoverCard.title}
         className='aspect-video rounded-t-md'
-        src={hoverCard.backdrop_path ? 'https://image.tmdb.org/t/p/original' + hoverCard.backdrop_path : ''}
+        src={hoverCard.backdrop_path ? 'https://image.tmdb.org/t/p/w500/' + hoverCard.backdrop_path : ''}
       />
       <div className='w-full px-4 py-4'>
         <div className='flex gap-2 mb-4'>
