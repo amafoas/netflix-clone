@@ -1,31 +1,28 @@
+import { ReactNode, useContext } from 'react'
 import Image from 'next/image'
-import { ReactNode } from 'react'
 import { VscTriangleDown, VscTriangleUp, VscAccount, VscQuestion, VscEdit } from 'react-icons/vsc'
-
-const AVATAR = require('@/public/images/default-blue.png')
+import { ProfileContext } from '@/contexts/ProfileContext'
+import { profiles } from '@/utils/profiles'
 
 export default function AccountMenu () {
+  const { profile, setProfile } = useContext(ProfileContext)
   return (
     <div className='flex items-center gap-2 group'>
-      <Image className='rounded w-7' width={0} height={0} src={AVATAR} alt='avatar' />
+      <Image className='rounded w-7' width={0} height={0} src={profile?.img_url || ''} alt='avatar' />
       <VscTriangleDown className='hidden lg:block transition-transform duration-200 group-hover:rotate-180' size={14} />
       <div className='hidden absolute right-2 top-10 mr-10 pt-5 group-hover:block'>
         <div className='border-b-2'>
           <VscTriangleUp className='absolute top-2 right-6' size={20} />
         </div>
         <ul className='bg-slate-800 border border-gray-700 bg-opacity-70'>
-          <MenuItem
-            href='#' text='Jorge'
-            leftIcon={<Image width={0} height={0} className='rounded' alt='Account avatar' src={AVATAR} />}
-          />
-          <MenuItem
-            href='#' text='Marta'
-            leftIcon={<Image width={0} height={0} className='rounded' alt='Account avatar' src={AVATAR} />}
-          />
-          <MenuItem
-            href='#' text='Claudio'
-            leftIcon={<Image width={0} height={0} className='rounded' alt='Account avatar' src={AVATAR} />}
-          />
+          {profiles.map((pf) => {
+            return pf.id !== profile?.id
+              ? <MenuItem
+                  key={pf.id} text={pf.name} onClick={() => setProfile(pf)}
+                  leftIcon={<Image width={0} height={0} className='rounded' alt={`avatar ${pf.name}`} src={pf.img_url} />}
+                />
+              : null
+          })}
           <MenuItem
             href='#' text='Manage profiles' topDivider
             leftIcon={<VscEdit size={22} />}
@@ -39,7 +36,7 @@ export default function AccountMenu () {
             leftIcon={<VscQuestion size={30} />}
           />
           <MenuItem
-            href='#' text='Sign out of Netflix' topDivider center
+            href='/' text='Sign out of Netflix' topDivider center
           />
         </ul>
       </div>
@@ -48,24 +45,27 @@ export default function AccountMenu () {
 }
 
 interface MenutItemProps {
-  href: string
   text: string
+  href?: string
+  onClick?: () => void
   topDivider?: boolean
   center?: boolean
   leftIcon?: ReactNode
 }
-function MenuItem ({ href, text, leftIcon, topDivider, center }: MenutItemProps) {
+function MenuItem ({ href, text, onClick, leftIcon, topDivider, center }: MenutItemProps) {
   return (
-    <li className={`flex items-center gap-2 px-3 w-48 cursor-pointer
+    <li
+      className={`flex items-center gap-2 px-3 w-48 cursor-pointer
     ${topDivider ? 'border-slate-700 border-t' : ''}
     ${center ? 'justify-center' : ''}
     hover:bg-slate-800 hover:bg-opacity-50 hover:underline`}
+      onClick={() => { onClick != null && onClick() }}
     >
       {leftIcon
         ? <div className='w-7 items-center justify-center flex'>{leftIcon}</div>
         : null}
       <a
-        href={href}
+        href={href || '#'}
         className='block text-xs py-3'
       >{text}
       </a>

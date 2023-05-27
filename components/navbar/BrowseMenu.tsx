@@ -1,5 +1,6 @@
 import { VscTriangleDown, VscTriangleUp } from 'react-icons/vsc'
 import styles from '@/styles/BrowseMenu.module.css'
+import Link from 'next/link'
 
 export default function BrowseMenu () {
   return (
@@ -13,12 +14,12 @@ export default function BrowseMenu () {
           <VscTriangleUp className='absolute top-5' size={20} />
         </div>
         <ul className={styles.browsemenu_list}>
-          <li><a className={styles.browsemenu_item} href='#'>Home</a></li>
-          <li><a className={styles.browsemenu_item} href='#'>Series</a></li>
-          <li><a className={styles.browsemenu_item} href='#'>Films</a></li>
-          <li><a className={styles.browsemenu_item} href='#'>New & Popular</a></li>
-          <li><a className={styles.browsemenu_item} href='#'>My list</a></li>
-          <li><a className={styles.browsemenu_item} href='#'>Browse by languages</a></li>
+          <li><Link className={styles.browsemenu_item} href='/browse'>Home</Link></li>
+          <li><Link className={styles.browsemenu_item} href='/not-implemented'>Series</Link></li>
+          <li><Link className={styles.browsemenu_item} href='/not-implemented'>Films</Link></li>
+          <li><Link className={styles.browsemenu_item} href='/not-implemented'>New & Popular</Link></li>
+          <li><Link className={styles.browsemenu_item} href='/not-implemented'>My list</Link></li>
+          <li><Link className={styles.browsemenu_item} href='/not-implemented'>Browse by languages</Link></li>
         </ul>
       </div>
     </div>
