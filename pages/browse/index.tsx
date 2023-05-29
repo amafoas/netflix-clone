@@ -4,6 +4,7 @@ import { Movie } from '@/types/movie'
 import WhoIsWatching from '@/components/browse/WhoIsWatching'
 import BrowseMain from '@/components/browse/BrowseMain'
 import { ProfileContext } from '@/contexts/ProfileContext'
+import ProtectedRoute from '@/components/ProtectedRoute'
 
 interface Responses {[key: string]: Movie[]}
 interface Props{responses: Responses }
@@ -11,11 +12,11 @@ interface Props{responses: Responses }
 export default function Browse ({ responses }:Props) {
   const { profile } = useContext(ProfileContext)
   return (
-    <>
+    <ProtectedRoute>
       {profile
         ? <BrowseMain responses={responses} />
         : <WhoIsWatching />}
-    </>
+    </ProtectedRoute>
   )
 }
 

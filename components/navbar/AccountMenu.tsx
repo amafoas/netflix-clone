@@ -3,9 +3,20 @@ import Image from 'next/image'
 import { VscTriangleDown, VscTriangleUp, VscAccount, VscQuestion, VscEdit } from 'react-icons/vsc'
 import { ProfileContext } from '@/contexts/ProfileContext'
 import { profiles } from '@/utils/profiles'
+import { auth } from '@/firebase/firebase'
+import { signOut } from 'firebase/auth'
 
 export default function AccountMenu () {
   const { profile, setProfile } = useContext(ProfileContext)
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth)
+    } catch (error) {
+      console.error('Error al desloguear:', error)
+    }
+  }
+
   return (
     <div className='flex items-center gap-2 group'>
       <Image className='rounded w-7' width={0} height={0} src={profile?.img_url || ''} alt='avatar' />
@@ -24,19 +35,20 @@ export default function AccountMenu () {
               : null
           })}
           <MenuItem
-            href='#' text='Manage profiles' topDivider
+            text='Manage profiles' topDivider
             leftIcon={<VscEdit size={22} />}
           />
           <MenuItem
-            href='#' text='Account'
+            text='Account'
             leftIcon={<VscAccount size={23} />}
           />
           <MenuItem
-            href='#' text='Help center'
+            text='Help center'
             leftIcon={<VscQuestion size={30} />}
           />
           <MenuItem
-            href='/' text='Sign out of Netflix' topDivider center
+            onClick={handleSignOut}
+            text='Sign out of Netflix' topDivider center
           />
         </ul>
       </div>
@@ -46,13 +58,12 @@ export default function AccountMenu () {
 
 interface MenutItemProps {
   text: string
-  href?: string
   onClick?: () => void
   topDivider?: boolean
   center?: boolean
   leftIcon?: ReactNode
 }
-function MenuItem ({ href, text, onClick, leftIcon, topDivider, center }: MenutItemProps) {
+function MenuItem ({ text, onClick, leftIcon, topDivider, center }: MenutItemProps) {
   return (
     <li
       className={`flex items-center gap-2 px-3 w-48 cursor-pointer
@@ -64,11 +75,10 @@ function MenuItem ({ href, text, onClick, leftIcon, topDivider, center }: MenutI
       {leftIcon
         ? <div className='w-7 items-center justify-center flex'>{leftIcon}</div>
         : null}
-      <a
-        href={href || '#'}
-        className='block text-xs py-3'
+      <p
+        className='text-xs py-3'
       >{text}
-      </a>
+      </p>
     </li>
   )
 }

@@ -1,11 +1,11 @@
 import React, { useRef } from 'react'
+import { signIn } from '@/firebase/auth'
+import Link from 'next/link'
+import { signInSchema } from '@/utils/signValidation'
 import SignLayout from '@/components/SignLayout'
-import { signUp } from '@/firebase/auth'
-import { signUpSchema } from '@/utils/signValidation'
 
 import { ToastContainer, ToastOptions, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { useRouter } from 'next/navigation'
 
 const toastConfig: ToastOptions = {
   position: 'top-center',
@@ -16,32 +16,25 @@ const toastConfig: ToastOptions = {
   toastId: 'sign-in-toast-id'
 }
 
-export default function SignUp () {
-  const router = useRouter()
+export default function SignInPage () {
   const emailRef = useRef<HTMLInputElement>(null)
-  const confirmEmailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
-  const confirmPasswordRef = useRef<HTMLInputElement>(null)
 
-  const handleSignUp = async (e:React.FormEvent<HTMLButtonElement>) => {
+  const handleSignIn = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault()
 
     const data = {
       email: emailRef.current?.value ?? '',
-      confirmEmail: confirmEmailRef.current?.value,
-      password: passwordRef.current?.value ?? '',
-      confirmPassword: confirmPasswordRef.current?.value
+      password: passwordRef.current?.value ?? ''
     }
 
     try {
-      await signUpSchema.validate(data)
-      const { error } = await signUp(data.email, data.password)
+      await signInSchema.validate(data)
+      const { error } = await signIn(data.email, data.password)
 
       if (error) {
         console.log(error.code)
         toast.error(error.message, toastConfig)
-      } else {
-        router.replace('/browse')
       }
     } catch (err: any) {
       toast.error(err.errors[0], toastConfig)
@@ -52,7 +45,7 @@ export default function SignUp () {
     <SignLayout>
       <div className='flex justify-center'>
         <div className='bg-black bg-opacity-70 p-16 self-center w-full mt-2 md:max-w-md rounded'>
-          <h2 className=' text-4xl mb-8 font-semibold'>Sign up</h2>
+          <h2 className=' text-4xl mb-8 font-semibold'>Sign in</h2>
           <form className='flex flex-col gap-4'>
             <input
               ref={emailRef}
@@ -60,25 +53,23 @@ export default function SignUp () {
               className='p-3 rounded-md bg-neutral-600 '
             />
             <input
-              ref={confirmEmailRef}
-              name='email' type='email' placeholder='Confirm email'
-              className='p-3 rounded-md bg-neutral-600 '
-            />
-            <input
               ref={passwordRef}
               name='password' type='password' placeholder='Password'
               className='p-3 rounded-md bg-neutral-600 '
             />
-            <input
-              ref={confirmPasswordRef}
-              name='password' type='password' placeholder='Confirm password'
-              className='p-3 rounded-md bg-neutral-600 '
-            />
             <button
               className='bg-red-600 py-3  rounded-md w-full mt-5 hover:bg-red-700 transition'
-              type='button' onClick={handleSignUp}
-            >Sign up
+              type='button' onClick={handleSignIn}
+            >Sign in
             </button>
+            <p className='text-neutral-500 self-center mt-2'>
+              First time using Nextflix?
+              <Link
+                href='/sign-up'
+                className='text-white ml-1 hover:underline cursor-pointer'
+              >Create an account
+              </Link>
+            </p>
           </form>
         </div>
       </div>
