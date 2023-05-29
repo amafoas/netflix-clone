@@ -1,13 +1,14 @@
 import { ReactNode, useContext } from 'react'
 import Image from 'next/image'
 import { VscTriangleDown, VscTriangleUp, VscAccount, VscQuestion, VscEdit } from 'react-icons/vsc'
-import { ProfileContext } from '@/contexts/ProfileContext'
-import { profiles } from '@/utils/profiles'
+import { UserDataContext } from '@/contexts/UserDataContext'
+
 import { auth } from '@/firebase/firebase'
 import { signOut } from 'firebase/auth'
+import { getProfile } from '@/utils/getProfile'
 
 export default function AccountMenu () {
-  const { profile, setProfile } = useContext(ProfileContext)
+  const { userData, setUserData } = useContext(UserDataContext)
 
   const handleSignOut = async () => {
     try {
@@ -19,24 +20,40 @@ export default function AccountMenu () {
 
   return (
     <div className='flex items-center gap-2 group'>
-      <Image className='rounded w-7' width={0} height={0} src={profile?.img_url || ''} alt='avatar' />
+      <Image
+        className='rounded w-7' width={0} height={0} alt='user avatar'
+        src={getProfile(userData.currentProfileId, userData.profiles)?.img_url || ''}
+      />
       <VscTriangleDown className='hidden lg:block transition-transform duration-200 group-hover:rotate-180' size={14} />
       <div className='hidden absolute right-2 top-10 mr-10 pt-5 group-hover:block'>
         <div className='border-b-2'>
           <VscTriangleUp className='absolute top-2 right-6' size={20} />
         </div>
         <ul className='bg-slate-800 border border-gray-700 bg-opacity-70'>
-          {profiles.map((pf) => {
-            return pf.id !== profile?.id
+          {userData.profiles.map((pf) => {
+            return pf.id !== userData?.currentProfileId
               ? <MenuItem
-                  key={pf.id} text={pf.name} onClick={() => setProfile(pf)}
-                  leftIcon={<Image width={0} height={0} className='rounded' alt={`avatar ${pf.name}`} src={pf.img_url} />}
+                  key={pf.id} text={pf.name}
+                  onClick={() => {
+                    setUserData(prev => ({ ...prev, currentProfileId: pf.id }))
+                  }}
+                  leftIcon={
+                    <Image
+                      width={0} height={0} className='rounded'
+                      alt={`avatar ${pf.name}`} src={pf.img_url}
+                    />
+                  }
                 />
               : null
           })}
           <MenuItem
             text='Manage profiles' topDivider
             leftIcon={<VscEdit size={22} />}
+            onClick={() => {
+              setUserData(prev => ({
+                ...prev, currentProfileId: -1
+              }))
+            }}
           />
           <MenuItem
             text='Account'

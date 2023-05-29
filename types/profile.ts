@@ -3,3 +3,8 @@ export interface Profile {
   name: string
   img_url: string
 }
+
+export interface ProfileData {
+  name: string
+  img_url: string
+}

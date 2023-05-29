@@ -13,7 +13,7 @@ const toastConfig: ToastOptions = {
   hideProgressBar: true,
   closeButton: false,
   theme: 'dark',
-  toastId: 'sign-in-toast-id'
+  toastId: 'sign-up-toast-id'
 }
 
 export default function SignUp () {

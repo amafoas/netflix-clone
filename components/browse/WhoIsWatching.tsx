@@ -1,38 +1,43 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import { VscAdd } from 'react-icons/vsc'
 import Image from 'next/image'
 import { Profile } from '@/types/profile'
-import { ProfileContext } from '@/contexts/ProfileContext'
-import { profiles as pf } from '@/utils/profiles'
+import { UserDataContext } from '@/contexts/UserDataContext'
+import NewProfileModal from '../NewProfileModal'
 
 export default function WhoIsWatching () {
-  const { setProfile } = useContext(ProfileContext)
-  const [profiles, setProfiles] = useState<Profile[]>([])
-
-  useEffect(() => {
-    setProfiles(pf)
-  }, [])
+  const { userData, setUserData } = useContext(UserDataContext)
+  const [showModal, setShowModal] = useState(false)
 
   return (
-    <div className='flex items-center flex-col h-full justify-center select-none'>
-      <h1 className='text-3xl pb-4'>Who is watching now ?</h1>
-      <div className='flex p-4 gap-4'>
-        {profiles.map((profile, id) =>
-          <ProfileCard
-            key={id} profile={profile}
-            onClick={() => setProfile(profile)}
-          />
-        )}
-        {profiles.length < 5 &&
-          <div className='flex items-center justify-center text-xl
+    <>
+      <NewProfileModal isOpen={showModal} setIsOpen={setShowModal} />
+      <div className='flex items-center flex-col h-full justify-center select-none'>
+        <h1 className='text-3xl pb-4'>Who is watching now ?</h1>
+        <div className='flex p-4 gap-4'>
+          {userData?.profiles.map((profile) =>
+            <ProfileCard
+              key={profile.id} profile={profile}
+              onClick={() => {
+                setUserData(prev => ({
+                  ...prev, currentProfileId: profile.id
+                }))
+              }}
+            />
+          )}
+          {userData.profiles.length < 5 &&
+            <div
+              className='flex items-center justify-center text-xl
             h-32 w-32 border-2 rounded cursor-pointer
             border-gray-500 text-gray-500
             hover:border-gray-50 hover:text-gray-50'
-          >
-            <VscAdd />
-          </div>}
+              onClick={() => setShowModal(true)}
+            >
+              <VscAdd />
+            </div>}
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 

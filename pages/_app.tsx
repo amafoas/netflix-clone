@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import type { AppProps } from 'next/app'
 import '@/styles/globals.css'
-import { ProfileProvider } from '@/contexts/ProfileContext'
+import { UserDataProvider } from '@/contexts/UserDataContext'
 import { AuthProvider } from '@/contexts/AuthContext'
 
 export default function App ({ Component, pageProps }: AppProps) {
@@ -12,9 +12,9 @@ export default function App ({ Component, pageProps }: AppProps) {
         <title>Nextflix</title>
       </Head>
       <AuthProvider>
-        <ProfileProvider>
+        <UserDataProvider>
           <Component {...pageProps} />
-        </ProfileProvider>
+        </UserDataProvider>
       </AuthProvider>
     </>
   )
