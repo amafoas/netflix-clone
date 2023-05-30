@@ -3,7 +3,7 @@ import { VscAdd } from 'react-icons/vsc'
 import Image from 'next/image'
 import { Profile } from '@/types/profile'
 import { UserDataContext } from '@/contexts/UserDataContext'
-import NewProfileModal from '../NewProfileModal'
+import NewProfileModal from '../modals/NewProfileModal'
 
 export default function WhoIsWatching () {
   const { userData, setUserData } = useContext(UserDataContext)

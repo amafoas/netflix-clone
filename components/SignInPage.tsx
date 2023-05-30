@@ -1,12 +1,12 @@
 import React, { useRef, useState } from 'react'
-import { signIn } from '@/firebase/auth'
+import { signIn } from '@/services/firebase/authActions'
 import Link from 'next/link'
-import { signInSchema } from '@/utils/signValidation'
+import { signInSchema } from '@/schemas/signInSchema'
 import SignLayout from '@/components/SignLayout'
 
 import { ToastContainer, ToastOptions, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import SubmitButton from './SubmitButton'
+import SubmitButton from './common/SubmitButton'
 
 const toastConfig: ToastOptions = {
   position: 'top-center',

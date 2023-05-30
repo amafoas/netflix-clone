@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getMoviesUrl } from '@/utils/requests'
+import { getMoviesUrl } from '@/services/tmdb'
 
 export default async function handler (req:NextApiRequest, res:NextApiResponse) {
   const { id } = req.query

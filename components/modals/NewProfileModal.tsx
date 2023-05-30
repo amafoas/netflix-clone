@@ -1,15 +1,18 @@
 import React, { Dispatch, SetStateAction, useContext, useRef, useState } from 'react'
 import Image from 'next/image'
 import { avatars } from '@/utils/avatars'
-import { profileSchema } from '@/utils/profileValidation'
+import { profileSchema } from '@/schemas/profileSchema'
 import { AuthContext } from '@/contexts/AuthContext'
-import { addProfileToUser, getProfilesFromUser } from '@/firebase/profileActions'
+import {
+  addProfileToUser,
+  getProfilesFromUser
+} from '@/services/firebase/profileActions'
 import { UserDataContext } from '@/contexts/UserDataContext'
 import { Profile } from '@/types/profile'
 
 import { ToastContainer, ToastOptions, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import SubmitButton from './SubmitButton'
+import SubmitButton from '../common/SubmitButton'
 
 const toastConfig: ToastOptions = {
   position: 'top-center',
@@ -85,7 +88,7 @@ const NewProfileModal = ({ isOpen, setIsOpen }: ModalProps) => {
           </div>
           <div className='mb-5'>
             <label className='block mb-2 font-medium'>Select avatar:</label>
-            <div className='flex space-x-2'>
+            <div className='grid grid-cols-4 gap-2'>
               {avatars.map(({ name, img_url }) =>
                 <Image
                   key={name} width={0} height={0}

@@ -1,11 +1,11 @@
 import React, { useContext } from 'react'
-import { firstRequests } from '@/utils/requests'
+import { firstRequests } from '@/services/tmdb'
 import { Movie } from '@/types/movie'
 import WhoIsWatching from '@/components/browse/WhoIsWatching'
 import BrowseMain from '@/components/browse/BrowseMain'
 import { UserDataContext } from '@/contexts/UserDataContext'
 import ProtectedRoute from '@/components/ProtectedRoute'
-import { getProfile } from '@/utils/getProfile'
+import { getProfile } from '@/utils/utils'
 
 interface Responses {[key: string]: Movie[]}
 interface Props{responses: Responses }

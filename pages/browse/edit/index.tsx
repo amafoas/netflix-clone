@@ -5,10 +5,9 @@ import { UserDataContext } from '@/contexts/UserDataContext'
 import Link from 'next/link'
 import DeleteModal from '@/components/modals/DeleteModal'
 import { Profile } from '@/types/profile'
-import NewProfileModal from '@/components/NewProfileModal'
+import NewProfileModal from '@/components/modals/NewProfileModal'
 
-interface Props { editMode?: boolean }
-export default function Edit ({ editMode }: Props) {
+export default function Edit () {
   const { userData } = useContext(UserDataContext)
   const [newProfileModal, setNewProfileModal] = useState(false)
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
@@ -33,7 +32,8 @@ export default function Edit ({ editMode }: Props) {
               className='relative group'
             >
               <VscClose
-                className='h-10 w-10 absolute z-10 -right-1 -top-1 hover:scale-125 transition cursor-pointer'
+                className='h-10 w-10 absolute z-10 -right-1 -top-1
+                hover:scale-125 transition cursor-pointer'
                 onClick={() => {
                   setSelectedProfile(profile)
                   setOpenDeleteModal(true)

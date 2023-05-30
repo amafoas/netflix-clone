@@ -6,7 +6,7 @@ import MovieCarousel, { Props as MovieCarouselProps } from '@/components/movieCa
 import MovieCarouselSkeleton from '@/components/movieCarousel/MovieCarouselSkeleton'
 import useIntersectionObserver from '@/hooks/useIntersectionObserver'
 import { HoverCardProvider } from '@/contexts/HoverCardContext'
-import { getMovieGenre } from '@/utils/requests'
+import { getMovieGenre } from '@/services/tmdb'
 import { Movie } from '@/types/movie'
 
 interface Responses {[key: string]: Movie[]}

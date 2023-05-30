@@ -3,9 +3,9 @@ import Image from 'next/image'
 import { VscTriangleDown, VscTriangleUp, VscAccount, VscQuestion, VscEdit } from 'react-icons/vsc'
 import { UserDataContext } from '@/contexts/UserDataContext'
 
-import { auth } from '@/firebase/firebase'
+import { auth } from '@/services/firebase/firebase'
 import { signOut } from 'firebase/auth'
-import { getProfile } from '@/utils/getProfile'
+import { getProfile } from '@/utils/utils'
 import { useRouter } from 'next/navigation'
 
 export default function AccountMenu () {

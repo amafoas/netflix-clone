@@ -1,12 +1,12 @@
 import { AuthContext } from '@/contexts/AuthContext'
 import { UserDataContext } from '@/contexts/UserDataContext'
-import { getProfilesFromUser, deleteProfileFromUser } from '@/firebase/profileActions'
+import { getProfilesFromUser, deleteProfileFromUser } from '@/services/firebase/profileActions'
 import { Profile } from '@/types/profile'
 import React, { Dispatch, SetStateAction, useContext, useRef, useState } from 'react'
 
 import { ToastContainer, ToastOptions, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import SubmitButton from '../SubmitButton'
+import SubmitButton from '../common/SubmitButton'
 
 const toastConfig: ToastOptions = {
   position: 'top-center',

@@ -1,7 +1,7 @@
 import { useState, createContext, ReactNode, Dispatch, SetStateAction, useEffect } from 'react'
 import { Profile } from '@/types/profile'
-import { auth } from '@/firebase/firebase'
-import { getProfilesFromUser } from '@/firebase/profileActions'
+import { auth } from '@/services/firebase/firebase'
+import { getProfilesFromUser } from '@/services/firebase/profileActions'
 
 type UserData = {
   currentProfileId: number
