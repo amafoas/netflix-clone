@@ -9,6 +9,7 @@ import { Profile } from '@/types/profile'
 
 import { ToastContainer, ToastOptions, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import SubmitButton from './SubmitButton'
 
 const toastConfig: ToastOptions = {
   position: 'top-center',
@@ -28,6 +29,7 @@ const NewProfileModal = ({ isOpen, setIsOpen }: ModalProps) => {
   const [avatar, setAvatar] = useState<string>(avatars[0].img_url)
   const user = useContext(AuthContext)
   const { setUserData } = useContext(UserDataContext)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
@@ -40,6 +42,7 @@ const NewProfileModal = ({ isOpen, setIsOpen }: ModalProps) => {
     if (!user) return
     try {
       await profileSchema.validate(data)
+      setIsSubmitting(true)
       addProfileToUser(user.uid, data)
         .then(() => {
           getProfilesFromUser(user.uid)
@@ -48,8 +51,10 @@ const NewProfileModal = ({ isOpen, setIsOpen }: ModalProps) => {
                 currentProfileId: prev.currentProfileId,
                 profiles: profiles as Profile[] || []
               }))
+            }).finally(() => {
+              setIsOpen(false)
+              setIsSubmitting(false)
             })
-          setIsOpen(false)
         }).catch((e) => {
           console.log('catch error: ', e)
         })
@@ -70,7 +75,7 @@ const NewProfileModal = ({ isOpen, setIsOpen }: ModalProps) => {
     >
       <div className='bg-zinc-800 bg-opacity-70 backdrop-blur-md rounded p-8 border border-zinc-600'>
         <h2 className='text-2xl font-bold mb-4 text-center'>Create new profile</h2>
-        <form onSubmit={handleSubmit}>
+        <form>
           <div className='mb-5'>
             <input
               type='text' id='name' ref={nameRef}
@@ -92,12 +97,11 @@ const NewProfileModal = ({ isOpen, setIsOpen }: ModalProps) => {
               )}
             </div>
           </div>
-          <button
-            type='submit'
-            className='bg-red-600 py-3  rounded-md w-full mt-5 hover:bg-red-700 transition'
-          >
-            Submit
-          </button>
+          <SubmitButton
+            text='Submit'
+            isSubmitting={isSubmitting}
+            onClick={handleSubmit}
+          />
         </form>
       </div>
       <ToastContainer />

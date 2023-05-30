@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import SignLayout from '@/components/SignLayout'
 import { signUp } from '@/firebase/auth'
 import { signUpSchema } from '@/utils/signValidation'
@@ -6,6 +6,7 @@ import { signUpSchema } from '@/utils/signValidation'
 import { ToastContainer, ToastOptions, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useRouter } from 'next/navigation'
+import SubmitButton from '@/components/SubmitButton'
 
 const toastConfig: ToastOptions = {
   position: 'top-center',
@@ -22,8 +23,9 @@ export default function SignUp () {
   const confirmEmailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
   const confirmPasswordRef = useRef<HTMLInputElement>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleSignUp = async (e:React.FormEvent<HTMLButtonElement>) => {
+  const handleSignUp = async (e:React.FormEvent) => {
     e.preventDefault()
 
     const data = {
@@ -35,12 +37,14 @@ export default function SignUp () {
 
     try {
       await signUpSchema.validate(data)
+      setIsSubmitting(true)
       const { error } = await signUp(data.email, data.password)
 
       if (error) {
         console.log(error.code)
         toast.error(error.message, toastConfig)
       } else {
+        setIsSubmitting(false)
         router.replace('/browse')
       }
     } catch (err: any) {
@@ -74,11 +78,11 @@ export default function SignUp () {
               name='password' type='password' placeholder='Confirm password'
               className='p-3 rounded-md bg-neutral-600 '
             />
-            <button
-              className='bg-red-600 py-3  rounded-md w-full mt-5 hover:bg-red-700 transition'
-              type='button' onClick={handleSignUp}
-            >Sign up
-            </button>
+            <SubmitButton
+              text='Sign up'
+              onClick={handleSignUp}
+              isSubmitting={isSubmitting}
+            />
           </form>
         </div>
       </div>

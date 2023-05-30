@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { signIn } from '@/firebase/auth'
 import Link from 'next/link'
 import { signInSchema } from '@/utils/signValidation'
@@ -6,6 +6,7 @@ import SignLayout from '@/components/SignLayout'
 
 import { ToastContainer, ToastOptions, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import SubmitButton from './SubmitButton'
 
 const toastConfig: ToastOptions = {
   position: 'top-center',
@@ -19,8 +20,9 @@ const toastConfig: ToastOptions = {
 export default function SignInPage () {
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleSignIn = async (e: React.FormEvent<HTMLButtonElement>) => {
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault()
 
     const data = {
@@ -30,12 +32,14 @@ export default function SignInPage () {
 
     try {
       await signInSchema.validate(data)
+      setIsSubmitting(true)
       const { error } = await signIn(data.email, data.password)
 
       if (error) {
         console.log(error.code)
         toast.error(error.message, toastConfig)
       }
+      setIsSubmitting(false)
     } catch (err: any) {
       toast.error(err.errors[0], toastConfig)
     }
@@ -57,11 +61,11 @@ export default function SignInPage () {
               name='password' type='password' placeholder='Password'
               className='p-3 rounded-md bg-neutral-600 '
             />
-            <button
-              className='bg-red-600 py-3  rounded-md w-full mt-5 hover:bg-red-700 transition'
-              type='button' onClick={handleSignIn}
-            >Sign in
-            </button>
+            <SubmitButton
+              text='Sign in'
+              onClick={handleSignIn}
+              isSubmitting={isSubmitting}
+            />
             <p className='text-neutral-500 self-center mt-2'>
               First time using Nextflix?
               <Link

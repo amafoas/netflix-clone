@@ -2,10 +2,11 @@ import { AuthContext } from '@/contexts/AuthContext'
 import { UserDataContext } from '@/contexts/UserDataContext'
 import { getProfilesFromUser, deleteProfileFromUser } from '@/firebase/profileActions'
 import { Profile } from '@/types/profile'
-import React, { Dispatch, SetStateAction, useContext, useRef } from 'react'
+import React, { Dispatch, SetStateAction, useContext, useRef, useState } from 'react'
 
 import { ToastContainer, ToastOptions, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import SubmitButton from '../SubmitButton'
 
 const toastConfig: ToastOptions = {
   position: 'top-center',
@@ -23,15 +24,17 @@ type ModalProps = {
 }
 
 const DeleteModal = ({ isOpen, setIsOpen, profile }: ModalProps) => {
-  const user = useContext(AuthContext)
   const { setUserData } = useContext(UserDataContext)
+  const user = useContext(AuthContext)
   const nameRef = useRef<HTMLInputElement>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleDelete = async (event: React.FormEvent) => {
     event.preventDefault()
 
     if (nameRef.current?.value === profile.name) {
       if (!user) return
+      setIsSubmitting(true)
       deleteProfileFromUser(user.uid, profile.id)
         .then(() => {
           getProfilesFromUser(user.uid)
@@ -42,9 +45,11 @@ const DeleteModal = ({ isOpen, setIsOpen, profile }: ModalProps) => {
               }))
             }).catch((e) => {
               console.log(e)
+            }).finally(() => {
+              setIsSubmitting(false)
+              setIsOpen(false)
             })
         })
-      setIsOpen(false)
     } else {
       toast.error('Names have to be the same to delete', toastConfig)
     }
@@ -75,13 +80,11 @@ const DeleteModal = ({ isOpen, setIsOpen, profile }: ModalProps) => {
               />
             </div>
             <div className='flex space-x-2'>
-              <button
-                type='submit'
-                className='bg-red-600 py-3 rounded-md w-full mt-5 hover:bg-red-700 transition'
+              <SubmitButton
+                text='Delete'
+                isSubmitting={isSubmitting}
                 onClick={handleDelete}
-              >
-                Delete
-              </button>
+              />
             </div>
           </form>
         </div>
