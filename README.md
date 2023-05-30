@@ -13,6 +13,7 @@ Currently available features:
 - Login functionality
 - Route protection
 - Create profiles
+- Delete profiles
 
 # Setting up the project
 First of all, you'll need to set your .env.local, so it looks like this

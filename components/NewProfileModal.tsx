@@ -4,11 +4,11 @@ import { avatars } from '@/utils/avatars'
 import { profileSchema } from '@/utils/profileValidation'
 import { AuthContext } from '@/contexts/AuthContext'
 import { addProfileToUser, getProfilesFromUser } from '@/firebase/profileActions'
+import { UserDataContext } from '@/contexts/UserDataContext'
+import { Profile } from '@/types/profile'
 
 import { ToastContainer, ToastOptions, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { UserDataContext } from '@/contexts/UserDataContext'
-import { Profile } from '@/types/profile'
 
 const toastConfig: ToastOptions = {
   position: 'top-center',

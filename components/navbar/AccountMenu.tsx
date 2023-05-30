@@ -6,9 +6,11 @@ import { UserDataContext } from '@/contexts/UserDataContext'
 import { auth } from '@/firebase/firebase'
 import { signOut } from 'firebase/auth'
 import { getProfile } from '@/utils/getProfile'
+import { useRouter } from 'next/navigation'
 
 export default function AccountMenu () {
   const { userData, setUserData } = useContext(UserDataContext)
+  const router = useRouter()
 
   const handleSignOut = async () => {
     try {
@@ -50,9 +52,7 @@ export default function AccountMenu () {
             text='Manage profiles' topDivider
             leftIcon={<VscEdit size={22} />}
             onClick={() => {
-              setUserData(prev => ({
-                ...prev, currentProfileId: -1
-              }))
+              router.push('browse/edit')
             }}
           />
           <MenuItem
