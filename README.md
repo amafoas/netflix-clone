@@ -14,6 +14,7 @@ Currently available features:
 - Route protection
 - Create profiles
 - Delete profiles
+- Edit profiles
 
 # Live Version
 This project is also deployed on Vercel, a cloud platform for static sites and serverless functions. You can visit the live version of this project at **https://netflix-clone-amafoas.vercel.app/**.
