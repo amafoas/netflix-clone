@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { VscArrowLeft } from 'react-icons/vsc'
 
 function NotImplemented () {
   return (
@@ -8,8 +9,11 @@ function NotImplemented () {
       </h1>
       <Link
         href='/browse'
-        className='underline text-xl text-red-500 hover:text-red-300 transition'
+        className='flex items-center gap-1 group
+        bold mt-20 text-xl text-red-500 border py-1 px-3 border-red-500
+        transition hover:text-red-300 hover:border-red-300'
       >
+        <VscArrowLeft className='group-hover:scale-125 transition' />
         Go back
       </Link>
     </div>

@@ -79,13 +79,11 @@ const NewProfileModal = ({ isOpen, setIsOpen }: ModalProps) => {
       <div className='bg-zinc-800 bg-opacity-70 backdrop-blur-md rounded p-8 border border-zinc-600'>
         <h2 className='text-2xl font-bold mb-4 text-center'>Create new profile</h2>
         <form>
-          <div className='mb-5'>
-            <input
-              type='text' id='name' ref={nameRef}
-              className='p-3 rounded-md bg-neutral-600 w-full'
-              placeholder='Profile name'
-            />
-          </div>
+          <input
+            type='text' id='name' ref={nameRef}
+            className='p-3 mb-5 rounded-md bg-neutral-600 w-full'
+            placeholder='Profile name'
+          />
           <div className='mb-5'>
             <label className='block mb-2 font-medium'>Select avatar:</label>
             <div className='grid grid-cols-4 gap-2'>

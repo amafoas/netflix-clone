@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { Profile } from '@/types/profile'
 import { UserDataContext } from '@/contexts/UserDataContext'
 import NewProfileModal from '../modals/NewProfileModal'
+import Link from 'next/link'
 
 export default function WhoIsWatching () {
   const { userData, setUserData } = useContext(UserDataContext)
@@ -36,6 +37,13 @@ export default function WhoIsWatching () {
               <VscAdd />
             </div>}
         </div>
+        <Link
+          href='browse/edit'
+          className='mt-20 px-6 py-1 border border-zinc-600
+          text-zinc-500 tracking-wider transition
+          hover:border-zinc-300 hover:text-zinc-300'
+        >MANAGE PROFILES
+        </Link>
       </div>
     </>
   )

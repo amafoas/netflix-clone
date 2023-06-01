@@ -67,3 +67,23 @@ export async function deleteProfileFromUser (user_uid: string, profile_id: numbe
     throw new Error('Failed to delete profile, please try again later')
   }
 }
+
+export async function updateProfileFromUser (user_uid: string, profile_id: number, profile_data: ProfileData) {
+  try {
+    const userDocRef = doc(db, 'user_profiles', user_uid)
+    const docSnap = await getDoc(userDocRef)
+
+    if (docSnap.exists()) {
+      const profilesData = docSnap.data().profiles
+
+      await updateDoc(userDocRef, {
+        profiles: {
+          ...profilesData,
+          [profile_id]: { id: profile_id, ...profile_data }
+        }
+      })
+    }
+  } catch (error) {
+    return error
+  }
+}

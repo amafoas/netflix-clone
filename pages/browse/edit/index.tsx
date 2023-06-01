@@ -1,20 +1,27 @@
 import { useContext, useState } from 'react'
-import { VscAdd, VscClose } from 'react-icons/vsc'
+import { VscAdd, VscClose, VscEdit, VscArrowLeft } from 'react-icons/vsc'
 import Image from 'next/image'
 import { UserDataContext } from '@/contexts/UserDataContext'
 import Link from 'next/link'
 import DeleteModal from '@/components/modals/DeleteModal'
 import { Profile } from '@/types/profile'
 import NewProfileModal from '@/components/modals/NewProfileModal'
+import EditModal from '@/components/modals/EditModal'
 
 export default function Edit () {
   const { userData } = useContext(UserDataContext)
   const [newProfileModal, setNewProfileModal] = useState(false)
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
+  const [openEditModal, setOpenEditModal] = useState(false)
   const [selectedProfile, setSelectedProfile] = useState<Profile>({ id: -1, name: '', img_url: '' })
 
   return (
     <>
+      <EditModal
+        isOpen={openEditModal}
+        setIsOpen={setOpenEditModal}
+        profile={selectedProfile}
+      />
       <DeleteModal
         isOpen={openDeleteModal}
         setIsOpen={setOpenDeleteModal}
@@ -33,10 +40,19 @@ export default function Edit () {
             >
               <VscClose
                 className='h-10 w-10 absolute z-10 -right-1 -top-1
-                hover:scale-125 transition cursor-pointer'
+                hover:scale-125 transition cursor-pointer
+                text-red-500 hover:text-red-300'
                 onClick={() => {
                   setSelectedProfile(profile)
                   setOpenDeleteModal(true)
+                }}
+              />
+              <VscEdit
+                className='h-14 w-14 absolute top-9 left-9
+                text-red-500 hover:text-red-300 transition cursor-pointer'
+                onClick={() => {
+                  setSelectedProfile(profile)
+                  setOpenEditModal(true)
                 }}
               />
               <Image
@@ -59,8 +75,11 @@ export default function Edit () {
         </div>
         <Link
           href='/browse'
-          className='hover:underline bold mt-20 text-xl text-red-500 hover:text-red-300 transition'
+          className='flex items-center gap-1 group
+          bold mt-20 text-xl text-red-500 border py-1 px-3 border-red-500
+          transition hover:text-red-300 hover:border-red-300'
         >
+          <VscArrowLeft className='group-hover:scale-125 transition' />
           Go back
         </Link>
       </div>

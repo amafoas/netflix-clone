@@ -14,7 +14,7 @@ const toastConfig: ToastOptions = {
   hideProgressBar: true,
   closeButton: false,
   theme: 'dark',
-  toastId: 'new-profile-toast-id'
+  toastId: 'delete-profile-toast-id'
 }
 
 type ModalProps = {
