@@ -15,6 +15,9 @@ Currently available features:
 - Create profiles
 - Delete profiles
 
+# Live Version
+This project is also deployed on Vercel, a cloud platform for static sites and serverless functions. You can visit the live version of this project at **https://netflix-clone-amafoas.vercel.app/**.
+
 # Setting up the project
 First of all, you'll need to set your .env.local, so it looks like this
 ```
@@ -39,6 +42,3 @@ Once the dependencies are installed, you can start the project with the followin
 npm run dev
 ```
 This will start the Next.js development server, and you can view the page in your browser by going to **http://localhost:3000**.
-
-# Live Version
-This project is also deployed on Vercel, a cloud platform for static sites and serverless functions. You can visit the live version of this project at **https://netflix-clone-amafoas.vercel.app/**.
