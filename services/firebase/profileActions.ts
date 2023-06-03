@@ -87,3 +87,30 @@ export async function updateProfileFromUser (user_uid: string, profile_id: numbe
     return error
   }
 }
+
+export async function updateProfileBookmarksFromUser (user_uid: string, profile_id: number, bookmarks: number[]) {
+  try {
+    const userDocRef = doc(db, 'user_profiles', user_uid)
+    const docSnap = await getDoc(userDocRef)
+
+    if (docSnap.exists()) {
+      const profilesData = docSnap.data().profiles
+
+      if (profilesData && profilesData[profile_id]) {
+        const updatedProfile = {
+          ...profilesData[profile_id],
+          bookmarks
+        }
+
+        await updateDoc(userDocRef, {
+          profiles: {
+            ...profilesData,
+            [profile_id]: updatedProfile
+          }
+        })
+      }
+    }
+  } catch (error) {
+    return error
+  }
+}

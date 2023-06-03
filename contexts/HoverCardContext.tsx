@@ -8,9 +8,10 @@ interface Card {
   title: string
   backdrop_path: string
   isHover: boolean
+  id: number
 }
 const emptyCard: Card = {
-  x: 0, y: 0, height: 0, width: 0, title: '', backdrop_path: '', isHover: false
+  x: 0, y: 0, height: 0, width: 0, title: '', backdrop_path: '', isHover: false, id: 0
 }
 
 interface ContextType {

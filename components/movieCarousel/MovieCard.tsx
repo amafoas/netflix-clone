@@ -19,7 +19,7 @@ function MovieCard ({ movie }: Props) {
         const y = top + window.scrollY
         timeoutId = setTimeout(() => {
           setHoverCard({
-            x: left, y, height, width, title, backdrop_path, isHover: true
+            x: left, y, height, width, title, backdrop_path, isHover: true, id: movie.id
           })
         }, 350)
       }}

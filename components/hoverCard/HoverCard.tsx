@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useContext } from 'react'
 import { HoverCardContext, emptyCard } from '@/contexts/HoverCardContext'
-import { BsPlayFill, BsPlus, BsHandThumbsUp } from 'react-icons/bs'
+import ActionButtonGroup from './ActionButtonGroup'
 
 export default function HoverCard () {
   const { hoverCard, setHoverCard } = useContext(HoverCardContext)
@@ -40,26 +40,7 @@ export default function HoverCard () {
         src={hoverCard.backdrop_path ? 'https://image.tmdb.org/t/p/w500/' + hoverCard.backdrop_path : ''}
       />
       <div className='w-full px-4 py-4'>
-        <div className='flex gap-2 mb-4'>
-          <div className='flex items-center justify-center
-          bg-slate-100 rounded-full w-8 h-8
-          hover:bg-opacity-80 transition cursor-pointer'
-          >
-            <BsPlayFill className='text-2xl text-black' />
-          </div>
-          <div className='flex items-center justify-center
-          border-2 border-slate-100 rounded-full w-8 h-8
-          border-opacity-50 hover:border-opacity-90 transition cursor-pointer'
-          >
-            <BsPlus className='text-2xl' />
-          </div>
-          <div className='flex items-center justify-center
-          border-2 border-slate-100 rounded-full w-8 h-8
-          border-opacity-50 hover:border-opacity-90 transition cursor-pointer'
-          >
-            <BsHandThumbsUp />
-          </div>
-        </div>
+        <ActionButtonGroup actionID={hoverCard.id} />
         <p className='text-sm'>{hoverCard.title}</p>
       </div>
       <style jsx>{`

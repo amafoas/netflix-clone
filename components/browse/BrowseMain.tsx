@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import NavBar from '@/components/navbar/Navbar'
 import Banner from '@/components/Banner'
-import HoverCard from '@/components/HoverCard'
+import HoverCard from '@/components/hoverCard/HoverCard'
 import MovieCarousel, { Props as MovieCarouselProps } from '@/components/movieCarousel/MovieCarousel'
 import MovieCarouselSkeleton from '@/components/movieCarousel/MovieCarouselSkeleton'
 import useIntersectionObserver from '@/hooks/useIntersectionObserver'
