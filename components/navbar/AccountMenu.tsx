@@ -5,12 +5,13 @@ import { UserDataContext } from '@/contexts/UserDataContext'
 
 import { auth } from '@/services/firebase/firebase'
 import { signOut } from 'firebase/auth'
-import { getProfile } from '@/utils/utils'
 import { useRouter } from 'next/navigation'
+import useProfile from '@/hooks/useProfile'
 
 export default function AccountMenu () {
   const { userData, setUserData } = useContext(UserDataContext)
   const router = useRouter()
+  const { profile } = useProfile()
 
   const handleSignOut = async () => {
     try {
@@ -24,7 +25,7 @@ export default function AccountMenu () {
     <div className='flex items-center gap-2 group'>
       <Image
         className='rounded w-7' width={0} height={0} alt='user avatar'
-        src={getProfile(userData.currentProfileId, userData.profiles)?.img_url || ''}
+        src={profile()?.img_url || ''}
       />
       <VscTriangleDown className='hidden lg:block transition-transform duration-200 group-hover:rotate-180' size={14} />
       <div className='hidden absolute right-2 top-10 mr-10 pt-5 group-hover:block'>

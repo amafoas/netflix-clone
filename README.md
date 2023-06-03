@@ -9,12 +9,10 @@ Currently available features:
 - Infinite movie row scroll
 - API Key protection
 - TMDB api conection
-- User registration
-- Login functionality
+- User login and registration
 - Route protection
-- Create profiles
-- Delete profiles
-- Edit profiles
+- Create, Delete and Edit profiles
+- Like and Bookmark movies
 
 # Live Version
 This project is also deployed on Vercel, a cloud platform for static sites and serverless functions. You can visit the live version of this project at **https://netflix-clone-amafoas.vercel.app/**.

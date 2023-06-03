@@ -3,6 +3,7 @@ export interface Profile {
   name: string
   img_url: string
   bookmarks: number[]
+  likes: number[]
 }
 
 export interface ProfileData {

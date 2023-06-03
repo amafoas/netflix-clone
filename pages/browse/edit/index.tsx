@@ -13,7 +13,9 @@ export default function Edit () {
   const [newProfileModal, setNewProfileModal] = useState(false)
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
   const [openEditModal, setOpenEditModal] = useState(false)
-  const [selectedProfile, setSelectedProfile] = useState<Profile>({ id: -1, name: '', img_url: '' })
+  const [selectedProfile, setSelectedProfile] = useState<Profile>({
+    id: -1, name: '', img_url: '', likes: [], bookmarks: []
+  })
 
   return (
     <>

@@ -1,5 +1,5 @@
 import { ProfileData } from '@/types/profile'
-import { addDoc, collection, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore'
+import { addDoc, arrayRemove, arrayUnion, collection, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore'
 import { db } from './firebase'
 
 export async function addProfileToUser (user_uid: string, profile_data: ProfileData) {
@@ -37,11 +37,10 @@ export async function getProfilesFromUser (user_uid: string) {
     if (docSnap.exists()) {
       const userProfiles = docSnap.data().profiles
 
-      return Object.values(userProfiles)
+      return Object.values(userProfiles) ?? []
     }
   } catch (error) {
     console.log('Error obteniendo los perfiles:', error)
-    return []
   }
 }
 
@@ -68,7 +67,7 @@ export async function deleteProfileFromUser (user_uid: string, profile_id: numbe
   }
 }
 
-export async function updateProfileFromUser (user_uid: string, profile_id: number, profile_data: ProfileData) {
+export async function updateProfileFromUser (user_uid: string, profile_id: number, new_profile_data: ProfileData) {
   try {
     const userDocRef = doc(db, 'user_profiles', user_uid)
     const docSnap = await getDoc(userDocRef)
@@ -79,7 +78,10 @@ export async function updateProfileFromUser (user_uid: string, profile_id: numbe
       await updateDoc(userDocRef, {
         profiles: {
           ...profilesData,
-          [profile_id]: { id: profile_id, ...profile_data }
+          [profile_id]: {
+            ...profilesData[profile_id],
+            ...new_profile_data
+          }
         }
       })
     }
@@ -88,29 +90,46 @@ export async function updateProfileFromUser (user_uid: string, profile_id: numbe
   }
 }
 
-export async function updateProfileBookmarksFromUser (user_uid: string, profile_id: number, bookmarks: number[]) {
+export async function addLikeToProfile (user_uid: string, profile_id: number, like: number): Promise<void> {
   try {
     const userDocRef = doc(db, 'user_profiles', user_uid)
-    const docSnap = await getDoc(userDocRef)
-
-    if (docSnap.exists()) {
-      const profilesData = docSnap.data().profiles
-
-      if (profilesData && profilesData[profile_id]) {
-        const updatedProfile = {
-          ...profilesData[profile_id],
-          bookmarks
-        }
-
-        await updateDoc(userDocRef, {
-          profiles: {
-            ...profilesData,
-            [profile_id]: updatedProfile
-          }
-        })
-      }
-    }
+    await updateDoc(userDocRef, {
+      [`profiles.${profile_id}.likes`]: arrayUnion(like)
+    })
   } catch (error) {
-    return error
+    console.log('Error al agregar el like:', error)
+  }
+}
+
+export async function removeLikeFromProfile (user_uid: string, profile_id: number, like: number): Promise<void> {
+  try {
+    const userDocRef = doc(db, 'user_profiles', user_uid)
+    await updateDoc(userDocRef, {
+      [`profiles.${profile_id}.likes`]: arrayRemove(like)
+    })
+  } catch (error) {
+    console.log('Error al agregar el like:', error)
+  }
+}
+
+export async function addBookmarkToProfile (user_uid: string, profile_id: number, bookmark: number): Promise<void> {
+  try {
+    const userDocRef = doc(db, 'user_profiles', user_uid)
+    await updateDoc(userDocRef, {
+      [`profiles.${profile_id}.bookmarks`]: arrayUnion(bookmark)
+    })
+  } catch (error) {
+    console.log('Error al agregar el bookmark:', error)
+  }
+}
+
+export async function removeBookmarkFromProfile (user_uid: string, profile_id: number, bookmark: number): Promise<void> {
+  try {
+    const userDocRef = doc(db, 'user_profiles', user_uid)
+    await updateDoc(userDocRef, {
+      [`profiles.${profile_id}.bookmarks`]: arrayRemove(bookmark)
+    })
+  } catch (error) {
+    console.log('Error al agregar el bookmark:', error)
   }
 }

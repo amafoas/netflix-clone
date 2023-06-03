@@ -1,52 +1,14 @@
-// import { useContext } from 'react'
 import { BsPlayFill, BsPlus, BsHandThumbsUp } from 'react-icons/bs'
-import { getProfilesFromUser, updateProfileBookmarksFromUser } from '@/services/firebase/profileActions'
-import { useContext, useEffect, useRef, useState } from 'react'
-import { UserDataContext } from '@/contexts/UserDataContext'
-import { AuthContext } from '@/contexts/AuthContext'
-import { getProfile, toggleValueInArray } from '@/utils/utils'
-import { Profile } from '@/types/profile'
+import useProfile from '@/hooks/useProfile'
+import { useState } from 'react'
 
 interface Props {
   actionID: number
 }
 function ActionButtonGroup ({ actionID }: Props) {
-  const user = useContext(AuthContext)
-  const { userData, setUserData } = useContext(UserDataContext)
-  const [saving, setSaving] = useState(false)
-  const profileRef = useRef<Profile | null>(null)
-
-  useEffect(() => {
-    profileRef.current = getProfile(userData.currentProfileId, userData.profiles)
-  }, [userData])
-
-  const handleSave = () => {
-    if (saving) return
-    if (!user || !profileRef.current) return
-
-    const newBookmarks = profileRef.current.bookmarks ?? []
-    toggleValueInArray(newBookmarks, actionID)
-
-    try {
-      setSaving(true)
-      updateProfileBookmarksFromUser(user.uid, userData.currentProfileId, newBookmarks)
-        .then(() => {
-          getProfilesFromUser(user.uid)
-            .then(profiles => {
-              setUserData(prev => ({
-                currentProfileId: prev.currentProfileId,
-                profiles: profiles as Profile[] || []
-              }))
-            }).finally(() => {
-              setSaving(false)
-            })
-        }).catch(e => {
-          console.log('catch error: ', e)
-        })
-    } catch (err: any) {
-      console.log(err.errors[0])
-    }
-  }
+  const { profile, toggleLike, toggleBookmark } = useProfile()
+  const [isBookmarking, setIsBookmarking] = useState(false)
+  const [isLiking, setIsLiking] = useState(false)
 
   return (
     <div className='flex gap-2 mb-4'>
@@ -60,14 +22,29 @@ function ActionButtonGroup ({ actionID }: Props) {
         className={`flex items-center justify-center
         border-2 border-slate-100 rounded-full w-8 h-8
         border-opacity-50 hover:border-opacity-100 transition cursor-pointer
-        ${profileRef.current?.bookmarks?.includes(actionID) ? 'border-opacity-100 bg-slate-100 text-black' : ''}`}
-        onClick={handleSave}
+        ${profile()?.bookmarks?.includes(actionID) ? 'border-opacity-100 bg-slate-100 text-black' : ''}`}
+        onClick={() => {
+          if (!isBookmarking) {
+            setIsBookmarking(true)
+            toggleBookmark(actionID)
+              .finally(() => { setIsBookmarking(false) })
+          }
+        }}
       >
         <BsPlus className='text-2xl' />
       </div>
-      <div className='flex items-center justify-center
+      <div
+        className={`flex items-center justify-center
         border-2 border-slate-100 rounded-full w-8 h-8
-        border-opacity-50 hover:border-opacity-90 transition cursor-pointer'
+        border-opacity-50 hover:border-opacity-90 transition cursor-pointer
+        ${profile()?.likes?.includes(actionID) ? 'border-opacity-100 bg-slate-100 text-black' : ''}`}
+        onClick={() => {
+          if (!isLiking) {
+            setIsLiking(true)
+            toggleLike(actionID)
+              .finally(() => setIsLiking(false))
+          }
+        }}
       >
         <BsHandThumbsUp />
       </div>

@@ -1,21 +1,19 @@
-import React, { useContext } from 'react'
 import { firstRequests } from '@/services/tmdb'
 import { Movie } from '@/types/movie'
 import WhoIsWatching from '@/components/browse/WhoIsWatching'
 import BrowseMain from '@/components/browse/BrowseMain'
-import { UserDataContext } from '@/contexts/UserDataContext'
 import ProtectedRoute from '@/components/ProtectedRoute'
-import { getProfile } from '@/utils/utils'
+import useProfile from '@/hooks/useProfile'
 
 interface Responses {[key: string]: Movie[]}
 interface Props{responses: Responses }
 
 export default function Browse ({ responses }:Props) {
-  const { userData } = useContext(UserDataContext)
+  const { profile } = useProfile()
 
   return (
     <ProtectedRoute>
-      {getProfile(userData.currentProfileId, userData.profiles)
+      {profile()
         ? <BrowseMain responses={responses} />
         : <WhoIsWatching />}
     </ProtectedRoute>
