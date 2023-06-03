@@ -8,11 +8,10 @@ import { Profile } from '@/types/profile'
 import NewProfileModal from '@/components/modals/NewProfileModal'
 import EditModal from '@/components/modals/EditModal'
 
+type modal = 'edit' | 'delete' | 'new'
 export default function Edit () {
   const { userData } = useContext(UserDataContext)
-  const [newProfileModal, setNewProfileModal] = useState(false)
-  const [openDeleteModal, setOpenDeleteModal] = useState(false)
-  const [openEditModal, setOpenEditModal] = useState(false)
+  const [isOpenModal, setIsOpenModal] = useState<modal | null>(null)
   const [selectedProfile, setSelectedProfile] = useState<Profile>({
     id: -1, name: '', img_url: '', likes: [], bookmarks: []
   })
@@ -20,18 +19,18 @@ export default function Edit () {
   return (
     <>
       <EditModal
-        isOpen={openEditModal}
-        setIsOpen={setOpenEditModal}
+        isOpen={isOpenModal === 'edit'}
+        setIsOpen={(open) => setIsOpenModal(open ? 'edit' : null)}
         profile={selectedProfile}
       />
       <DeleteModal
-        isOpen={openDeleteModal}
-        setIsOpen={setOpenDeleteModal}
+        isOpen={isOpenModal === 'delete'}
+        setIsOpen={(open) => setIsOpenModal(open ? 'delete' : null)}
         profile={selectedProfile}
       />
       <NewProfileModal
-        isOpen={newProfileModal}
-        setIsOpen={setNewProfileModal}
+        isOpen={isOpenModal === 'new'}
+        setIsOpen={(open) => setIsOpenModal(open ? 'new' : null)}
       />
       <div className='flex items-center flex-col h-full justify-center select-none'>
         <div className='flex p-4 gap-4'>
@@ -46,7 +45,7 @@ export default function Edit () {
                 text-red-500 hover:text-red-300'
                 onClick={() => {
                   setSelectedProfile(profile)
-                  setOpenDeleteModal(true)
+                  setIsOpenModal('delete')
                 }}
               />
               <VscEdit
@@ -54,7 +53,7 @@ export default function Edit () {
                 text-red-500 hover:text-red-300 transition cursor-pointer'
                 onClick={() => {
                   setSelectedProfile(profile)
-                  setOpenEditModal(true)
+                  setIsOpenModal('edit')
                 }}
               />
               <Image
@@ -70,7 +69,7 @@ export default function Edit () {
                 h-32 w-32 border-2 rounded cursor-pointer
               border-gray-500 text-gray-500
               hover:border-gray-50 hover:text-gray-50'
-              onClick={() => setNewProfileModal(true)}
+              onClick={() => setIsOpenModal('new')}
             >
               <VscAdd />
             </div>}

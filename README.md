@@ -6,7 +6,7 @@ This project is a clone of Netflix, built with **React**, **Next.js**, **Tailwin
 ## Features
 Currently available features: 
 - Image optimization
-- Infinite movie row scroll
+- Infinite movie row on scroll
 - API Key protection
 - TMDB api conection
 - User login and registration

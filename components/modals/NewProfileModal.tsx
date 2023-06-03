@@ -1,27 +1,13 @@
 import React, { Dispatch, SetStateAction, useContext, useRef, useState } from 'react'
+import { AuthContext } from '@/contexts/AuthContext'
+import { UserDataContext } from '@/contexts/UserDataContext'
 import Image from 'next/image'
+import { Profile } from '@/types/profile'
 import { avatars } from '@/utils/avatars'
 import { profileSchema } from '@/schemas/profileSchema'
-import { AuthContext } from '@/contexts/AuthContext'
-import {
-  addProfileToUser,
-  getProfilesFromUser
-} from '@/services/firebase/profileActions'
-import { UserDataContext } from '@/contexts/UserDataContext'
-import { Profile } from '@/types/profile'
-
-import { ToastContainer, ToastOptions, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { addProfileToUser, getProfilesFromUser } from '@/services/firebase/profileActions'
 import SubmitButton from '../common/SubmitButton'
-
-const toastConfig: ToastOptions = {
-  position: 'top-center',
-  autoClose: 800,
-  hideProgressBar: true,
-  closeButton: false,
-  theme: 'dark',
-  toastId: 'new-profile-toast-id'
-}
+import ModalLayout, { showModalToast } from './ModalLayout'
 
 type ModalProps = {
   isOpen: boolean
@@ -62,20 +48,12 @@ const NewProfileModal = ({ isOpen, setIsOpen }: ModalProps) => {
           console.log('catch error: ', e)
         })
     } catch (err: any) {
-      toast.error(err.errors[0], toastConfig)
+      showModalToast(err.errors[0])
     }
   }
 
-  if (!isOpen) return null
   return (
-    <div
-      className='z-50 fixed w-full h-full backdrop-blur-md flex items-center justify-center select-none'
-      onClick={(event) => {
-        if (event.target === event.currentTarget) {
-          setIsOpen(false)
-        }
-      }}
-    >
+    <ModalLayout isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className='bg-zinc-800 bg-opacity-70 backdrop-blur-md rounded p-8 border border-zinc-600'>
         <h2 className='text-2xl font-bold mb-4 text-center'>Create new profile</h2>
         <form>
@@ -105,8 +83,7 @@ const NewProfileModal = ({ isOpen, setIsOpen }: ModalProps) => {
           />
         </form>
       </div>
-      <ToastContainer />
-    </div>
+    </ModalLayout>
   )
 }
 
